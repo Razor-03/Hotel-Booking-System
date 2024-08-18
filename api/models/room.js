@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const roomSchema = new Schema({
     roomNo: { type: String, required: true, unique: true },
     roomType: { type: String, enum: ['Single', 'Double'], required: true },
-    pricePerDay: { type: Number, required: true },
+    floor: { type: Number, required: true },
+    pricePerNight: { type: Number, required: true },
     roomImage: { type: String },
     description: { type: String },
     availabilityStatus: { type: Boolean, default: true },
@@ -16,4 +17,5 @@ const roomSchema = new Schema({
 });
 
 const Room = mongoose.model('Room', roomSchema);
-module.exports = Room;
+
+export default Room;
