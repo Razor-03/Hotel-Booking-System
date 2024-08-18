@@ -1,15 +1,25 @@
 import express from "express";
+import 'dotenv/config';
 const app = express();
 
 import cookieParser from "cookie-parser";
 import methodOverride from 'method-override';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 app.use(cors({origin: process.env.CLIENT_URL, credentials: true}));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(cookieParser());
+
+mongoose.connect(process.env.DATABASE_URL)
+.then(() => {
+    console.log('Connected to MongoDB Atlas!');
+})
+.catch((error) => {
+    console.error('Error connecting to MongoDB Atlas:', error);
+});
 
 import roomRoutes from './routes/rooms.route.js';
 
