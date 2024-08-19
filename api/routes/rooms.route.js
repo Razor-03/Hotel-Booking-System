@@ -46,4 +46,32 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+    try {
+        const room = new Room(req.body);
+        await room.save();
+        res.status(201).json({message: "Room created successfully"});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.put("/:id", async (req, res) => {
+    try {
+        await Room.findByIdAndUpdate(req.params.id, req.body);
+        res.status(200).json({message: "Room updated successfully"});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    try {
+        await Room.findByIdAndDelete(req.params.id);
+        res.status(200).json({message: "Room deleted successfully"});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;
