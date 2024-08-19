@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     departureDate: { type: Date, required: true },
     numberOfChildren: { type: Number, default: 0 },
     numberOfAdults: { type: Number, required: true },
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
 });
 
 const User = mongoose.model('User', userSchema);
