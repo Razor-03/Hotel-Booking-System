@@ -29,12 +29,21 @@ router.get("/", async (req, res) => {
     }
 
     try {
-        const rooms = await Room.find().populate("history.user");
+        const rooms = await Room.find(query);
         res.status(200).json(rooms);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 
+});
+
+router.get("/:id", async (req, res) => {
+    try {
+        const room = await Room.findById(req.params.id).populate("history.user");
+        res.status(200).json(room);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 export default router;
