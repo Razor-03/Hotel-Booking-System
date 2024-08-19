@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
-import 'dotenv/config';
-import Room from "./models/room.schema.js";
+import mongoose from 'mongoose';
+import Review from './models/review.schema.js';
+import User from './models/user.schema.js';
+import Room from './models/room.schema.js';
+import "dotenv/config";
 
 mongoose.connect(process.env.DATABASE_URL)
 .then(() => {
@@ -10,20 +12,53 @@ mongoose.connect(process.env.DATABASE_URL)
     console.error('Error connecting to MongoDB Atlas:', error);
 });
 
-const newRoom = new Room({
-    roomNo: '101',
-    roomType: 'Single',
-    floor: 1,
-    pricePerNight: 64,
-    roomImage: 'room101.jpg',
-    description: 'This is a single room',
-    availabilityStatus: true
-});
+async function seedUser() {
+    try {
+        const user = new User({
+            username: "Razor",
+            email: "razor@gmail.com",
+            password: "razor",
+            contact: "1234567890",
+            arrivalDate: new Date(),
+            departureDate: new Date() + 1,
+            numberOfAdults: 2,
+            numberOfChildren: 0,
+        });
 
-newRoom.save()
-.then((room) => {
-    console.log('Room created:', room);
-})
-.catch((error) => {
-    console.error('Error creating room:', error);
-});
+        const savedUser = await user.save();
+        console.log('Review saved:', savedUser);
+    } catch (error) {
+        console.error('Error saving review:', error);
+    }
+}
+
+async function seedReview() {
+    try {
+        // Assuming you have a user and a room already in your database
+        const user = await User.findOne({
+            username: 'Razor'
+        }); // Find an existing user
+        const room = await Room.findOne({
+            roomNo: '101'
+        });
+
+        if (!user || !room) {
+            console.log('Please ensure there is at least one user and one room in the database.');
+            return;
+        }
+
+        const review = new Review({
+            user: user._id, // Reference to the user
+            room: room._id, // Reference to the room
+            rating: 5, // Rating out of 5
+            comment: 'The room was amazing, very clean and the service was top-notch. Highly recommended!',
+        });
+
+        const savedReview = await review.save();
+        console.log('Review saved:', savedReview);
+    } catch (error) {
+        console.error('Error saving review:', error);
+    }
+}
+
+seedReview();
