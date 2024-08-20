@@ -22,8 +22,10 @@ mongoose.connect(process.env.DATABASE_URL)
 });
 
 import roomRoutes from './routes/rooms.route.js';
+import userRoutes from './routes/users.route.js';
 
 app.use("/api/rooms", roomRoutes);
+app.use("/api/users", userRoutes);
 
 
 app.all('*', (req, res, next) => {
