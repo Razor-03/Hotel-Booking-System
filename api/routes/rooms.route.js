@@ -1,6 +1,7 @@
 import express from "express";
 import Room from "../models/room.schema.js";
 import User from "../models/user.schema.js";
+import Booking from "../models/booking.schema.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -57,14 +58,19 @@ router.post("/", async (req, res) => {
 });
 
 router.post('/book-room', async (req, res) => {
-    const { username, email, contact, arrivalDate, departureDate, roomNo, numberOfAdults, numberOfChildren } = req.body;
-
     try {
+        const { name, email, contact, roomNo, arrivalDate, departureDate, numberOfAdults, numberOfChildren } = req.body;
+
+        const room = await Room.findOne({ roomNo, availabilityStatus: true });
+        if (!room) {
+            return res.status(400).json({ error: 'Room not available or does not exist.' });
+        }
+
         let user = await User.findOne({ email });
 
         if (!user) {
             user = new User({
-                username,
+                name,
                 email,
                 contact,
                 arrivalDate,
@@ -72,37 +78,42 @@ router.post('/book-room', async (req, res) => {
                 numberOfAdults,
                 numberOfChildren
             });
-
             await user.save();
         }
 
-        // 2. Find the room by room number
-        let room = await Room.findOne({ roomNo });
-
-        if (!room) {
-            return res.status(404).json({ message: 'Room not found' });
-        }
-
-        if (!room.availabilityStatus) {
-            return res.status(400).json({ message: 'Room is already booked' });
-        }
-
-        // 3. Update the room's history and set availability to false
         room.history.push({
             user: user._id,
-            arrivalDate: new Date(arrivalDate),
-            departureDate: new Date(departureDate),
+            arrivalDate,
+            departureDate
         });
-
         room.availabilityStatus = false;
 
         await room.save();
 
-        res.status(200).json({ message: 'Room booked successfully', room });
+        const booking = new Booking({
+            user: user._id,
+            room: room._id,
+            arrivalDate,
+            departureDate,
+            numberOfAdults,
+            numberOfChildren,
+            status: 'Pending', // Assuming booking needs to be approved
+            bookingDate: new Date() // Set the current date as the booking date
+        });
+
+        await booking.save();
+
+        // Send a response back to the client
+        res.status(201).json({
+            message: 'Room booked successfully!',
+            bookingId: booking._id,
+            userId: user._id,
+            roomId: room._id
+        });
 
     } catch (error) {
         console.error('Error booking room:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
