@@ -56,6 +56,56 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.post('/book-room', async (req, res) => {
+    const { username, email, contact, arrivalDate, departureDate, roomNo, numberOfAdults, numberOfChildren } = req.body;
+
+    try {
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            user = new User({
+                username,
+                email,
+                contact,
+                arrivalDate,
+                departureDate,
+                numberOfAdults,
+                numberOfChildren
+            });
+
+            await user.save();
+        }
+
+        // 2. Find the room by room number
+        let room = await Room.findOne({ roomNo });
+
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+
+        if (!room.availabilityStatus) {
+            return res.status(400).json({ message: 'Room is already booked' });
+        }
+
+        // 3. Update the room's history and set availability to false
+        room.history.push({
+            user: user._id,
+            arrivalDate: new Date(arrivalDate),
+            departureDate: new Date(departureDate),
+        });
+
+        room.availabilityStatus = false;
+
+        await room.save();
+
+        res.status(200).json({ message: 'Room booked successfully', room });
+
+    } catch (error) {
+        console.error('Error booking room:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 router.put("/:id", async (req, res) => {
     try {
         await Room.findByIdAndUpdate(req.params.id, req.body);
