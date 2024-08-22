@@ -21,6 +21,19 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/info", async (req, res) => {
+    try {
+        const bookings = await Booking.find();
+        const totalBookings = bookings.length;
+        const pendingBookings = bookings.filter(booking => booking.bookingStatus === "Pending").length;
+        const approvedBookings = bookings.filter(booking => booking.bookingStatus === "Approved").length;
+        const rejectedBookings = bookings.filter(booking => booking.bookingStatus === "Rejected").length;
+        res.status(200).json({ totalBookings, pendingBookings, approvedBookings, rejectedBookings });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get("/revenue", async (req, res) => {
     try {
         const bookings = await Booking.find({ bookingStatus: "Approved" });
