@@ -5,6 +5,22 @@ import Booking from "../models/booking.schema.js";
 import Review from "../models/review.schema.js";
 const router = express.Router();
 
+router.get("/", async (req, res) => {
+    const { bookingStatus } = req.query;
+
+    try {
+        let bookings = null;
+        if (bookingStatus) {
+            bookings = await Booking.find({ bookingStatus });
+        } else {
+            bookings = await Booking.find();
+        }
+        res.status(200).json(bookings);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.put('/:id/approve', async (req, res) => {
     try {
         const { id } = req.params;
