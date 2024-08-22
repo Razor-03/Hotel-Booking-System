@@ -31,7 +31,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
 
-
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
 });
