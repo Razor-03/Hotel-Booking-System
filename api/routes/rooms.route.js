@@ -121,10 +121,10 @@ router.post("/:id/book", verifyToken, async (req, res) => {
         .json({ error: "Room is not available for booking." });
     }
 
-    let user = await User.findById(userId);
+    // let user = await User.findById(userId);
 
     room.history.push({
-      user: user._id,
+      user: req.userId,
       arrivalDate,
       departureDate,
     });
@@ -133,10 +133,13 @@ router.post("/:id/book", verifyToken, async (req, res) => {
     await room.save();
 
     const booking = new Booking({
-      user: user._id,
+      user: req.userId,
       room: room._id,
       bookingStatus: "Pending",
-      bookingDate: new Date(),
+      arrivalDate,
+      departureDate,
+      numberOfAdults,
+      numberOfChildren,
       totalAmount:
         room.pricePerNight * numberOfAdults +
         room.pricePerNight * 0.5 * numberOfChildren,
@@ -148,7 +151,7 @@ router.post("/:id/book", verifyToken, async (req, res) => {
     res.status(201).json({
       message: "Room booked successfully!",
       bookingId: booking._id,
-      userId: user._id,
+      userId: req.userId,
       roomId: room._id,
     });
   } catch (error) {
@@ -212,13 +215,12 @@ router.delete("/:id", verifyToken, authorizeAdmin, async (req, res) => {
 router.post("/:id/review", verifyToken, async (req, res) => {
   const { id } = req.params;
   try {
-    const { username, rating, comment } = req.body;
+    const { rating, comment } = req.body;
 
-    const user = await User.findOne({ username });
-    console.log(id, user._id);
+    // const user = await User.findById(req.userId);
 
     const booking = await Booking.findOne({
-      user: user._id,
+      user: req.userId,
       room: id,
       bookingStatus: "Approved",
     });
@@ -229,7 +231,7 @@ router.post("/:id/review", verifyToken, async (req, res) => {
         .json({ error: "You can only review rooms that you have booked." });
     }
 
-    const existingReview = await Review.findOne({ user: user._id, room: id });
+    const existingReview = await Review.findOne({ user: req.userId, room: id });
     if (existingReview) {
       return res
         .status(400)
@@ -237,7 +239,7 @@ router.post("/:id/review", verifyToken, async (req, res) => {
     }
 
     const review = new Review({
-      user: user._id,
+      user: req.userId,
       room: id,
       rating,
       comment,
