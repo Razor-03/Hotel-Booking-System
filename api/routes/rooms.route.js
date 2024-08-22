@@ -2,6 +2,7 @@ import express from "express";
 import Room from "../models/room.schema.js";
 import User from "../models/user.schema.js";
 import Booking from "../models/booking.schema.js";
+import Review from "../models/review.schema.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -133,6 +134,45 @@ router.delete("/:id", async (req, res) => {
         res.status(200).json({message: "Room deleted successfully"});
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+router.post('/:id/review', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { username, rating, comment } = req.body;
+
+        const user = await User.findOne({ username });
+        console.log(id, user._id);
+
+        const booking = await Booking.findOne({ user: user._id, room: id, bookingStatus: 'Approved' });
+        
+        if (!booking) {
+            return res.status(400).json({ error: 'You can only review rooms that you have booked.' });
+        }
+
+        const existingReview = await Review.findOne({ user: user._id, room: id });
+        if (existingReview) {
+            return res.status(400).json({ error: 'You have already reviewed this room.' });
+        }
+
+        const review = new Review({
+            user: user._id,
+            room: id,
+            rating,
+            comment
+        });
+
+        await review.save();
+
+        res.status(201).json({
+            message: 'Review submitted successfully!',
+            reviewId: review._id
+        });
+
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
