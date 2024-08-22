@@ -57,20 +57,24 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.post('/book-room', async (req, res) => {
+router.post('/:id/book', async (req, res) => {
+    const { id } = req.params;
     try {
-        const { name, email, contact, roomNo, arrivalDate, departureDate, numberOfAdults, numberOfChildren } = req.body;
+        const { username, email, contact, arrivalDate, departureDate, numberOfAdults, numberOfChildren } = req.body;
 
-        const room = await Room.findOne({ roomNo, availabilityStatus: true });
+        const room = await Room.findById(id);
+        console.log(id, room);
         if (!room) {
             return res.status(400).json({ error: 'Room not available or does not exist.' });
+        } else if (!room.availabilityStatus) {
+            return res.status(400).json({ error: 'Room is not available for booking.' });
         }
 
         let user = await User.findOne({ email });
 
         if (!user) {
             user = new User({
-                name,
+                username,
                 email,
                 contact,
                 arrivalDate,
@@ -93,12 +97,9 @@ router.post('/book-room', async (req, res) => {
         const booking = new Booking({
             user: user._id,
             room: room._id,
-            arrivalDate,
-            departureDate,
-            numberOfAdults,
-            numberOfChildren,
-            status: 'Pending', // Assuming booking needs to be approved
-            bookingDate: new Date() // Set the current date as the booking date
+            bookingStatus: 'Pending',
+            bookingDate: new Date(),
+            totalAmount: room.pricePerNight * numberOfAdults + room.pricePerNight * 0.5 * numberOfChildren,
         });
 
         await booking.save();
