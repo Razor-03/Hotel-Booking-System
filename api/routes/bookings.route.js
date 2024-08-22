@@ -52,6 +52,8 @@ router.put('/:id/approve', async (req, res) => {
         if (!booking) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
+        const room = await Room.findById(booking.room);
+        room.availabilityStatus = false;
 
         if (booking.status === 'Approved') {
             return res.status(400).json({ error: 'Booking is already approved.' });
