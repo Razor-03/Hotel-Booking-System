@@ -71,6 +71,8 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+
+
 router.post("/", async (req, res) => {
     try {
         const room = new Room(req.body);
@@ -144,8 +146,39 @@ router.post('/:id/book', async (req, res) => {
 
 router.put("/:id", async (req, res) => {
     try {
-        await Room.findByIdAndUpdate(req.params.id, req.body);
-        res.status(200).json({message: "Room updated successfully"});
+        const { id } = req.params;
+        const {
+            roomNo,
+            roomType,
+            floor,
+            pricePerNight,
+            roomImage,
+            description,
+            availabilityStatus,
+            servantName,
+            servantContact
+        } = req.body;
+
+        // Find the room by ID
+        const room = await Room.findById(id);
+        if (!room) {
+            return res.status(404).json({ error: 'Room not found' });
+        }
+
+        // Update room details
+        room.roomNo = roomNo || room.roomNo;
+        room.roomType = roomType || room.roomType;
+        room.floor = floor || room.floor;
+        room.pricePerNight = pricePerNight || room.pricePerNight;
+        room.roomImage = roomImage || room.roomImage;
+        room.description = description || room.description;
+        room.availabilityStatus = availabilityStatus !== undefined ? availabilityStatus : room.availabilityStatus;
+        room.servantName = servantName || room.servantName;
+        room.servantContact = servantContact || room.servantContact;
+
+        await room.save();
+
+        res.status(200).json({ message: 'Room updated successfully', room });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
