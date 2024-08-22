@@ -105,7 +105,6 @@ router.post("/", verifyToken, authorizeAdmin, async (req, res) => {
 
 router.post("/:id/book", verifyToken, async (req, res) => {
   const { id } = req.params;
-  const userId = req.userId;
   try {
     const { arrivalDate, departureDate, numberOfAdults, numberOfChildren } =
       req.body;
@@ -122,6 +121,18 @@ router.post("/:id/book", verifyToken, async (req, res) => {
     }
 
     // let user = await User.findById(userId);
+
+    const alreadyBooked = await Booking.findOne({
+      user: req.userId,
+      room: id,
+      bookingStatus: "Pending",
+    });
+
+    if (alreadyBooked) {
+      return res
+        .status(201)
+        .json({ message: "You have already booked this room. Pending for approval." });
+    }
 
     room.history.push({
       user: req.userId,
@@ -149,7 +160,7 @@ router.post("/:id/book", verifyToken, async (req, res) => {
 
     // Send a response back to the client
     res.status(201).json({
-      message: "Room booked successfully!",
+      message: "Room booked successfully! Pending for approval.",
       bookingId: booking._id,
       userId: req.userId,
       roomId: room._id,
