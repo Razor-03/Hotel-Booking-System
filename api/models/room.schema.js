@@ -8,7 +8,7 @@ const roomSchema = new Schema({
     servantContact: { type: String, required: true },
     floor: { type: Number, required: true },
     pricePerNight: { type: Number, required: true },
-    roomImage: { type: String },
+    roomImages: { type: Array },
     description: { type: String },
     availabilityStatus: { type: Boolean, default: true },
     history: [{
