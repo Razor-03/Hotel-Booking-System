@@ -4,6 +4,7 @@ import User from "../models/user.schema.js";
 import Booking from "../models/booking.schema.js";
 import Review from "../models/review.schema.js";
 import authorizeAdmin from "../middleware/authorizeAdmin.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
 router.get("/", authorizeAdmin, async (req, res) => {
@@ -35,7 +36,7 @@ router.get("/info", authorizeAdmin, async (req, res) => {
     }
 });
 
-router.get("/revenue", authorizeAdmin, async (req, res) => {
+router.get("/revenue", verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const bookings = await Booking.find({ bookingStatus: "Approved" });
         const revenue = bookings.reduce((total, booking) => total + booking.totalAmount, 0);
@@ -45,7 +46,7 @@ router.get("/revenue", authorizeAdmin, async (req, res) => {
     }
 });
 
-router.put('/:id/approve', authorizeAdmin, async (req, res) => {
+router.put('/:id/approve', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -75,7 +76,7 @@ router.put('/:id/approve', authorizeAdmin, async (req, res) => {
     }
 });
 
-router.put('/:id/reject', authorizeAdmin, async (req, res) => {
+router.put('/:id/reject', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { id } = req.params;
 
