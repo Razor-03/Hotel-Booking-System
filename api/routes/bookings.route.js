@@ -3,9 +3,10 @@ import Room from "../models/room.schema.js";
 import User from "../models/user.schema.js";
 import Booking from "../models/booking.schema.js";
 import Review from "../models/review.schema.js";
+import authorizeAdmin from "../middleware/authorizeAdmin.js";
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", authorizeAdmin, async (req, res) => {
     const { bookingStatus } = req.query;
 
     try {
@@ -21,7 +22,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/info", async (req, res) => {
+router.get("/info", authorizeAdmin, async (req, res) => {
     try {
         const bookings = await Booking.find();
         const totalBookings = bookings.length;
@@ -34,7 +35,7 @@ router.get("/info", async (req, res) => {
     }
 });
 
-router.get("/revenue", async (req, res) => {
+router.get("/revenue", authorizeAdmin, async (req, res) => {
     try {
         const bookings = await Booking.find({ bookingStatus: "Approved" });
         const revenue = bookings.reduce((total, booking) => total + booking.totalAmount, 0);
@@ -44,7 +45,7 @@ router.get("/revenue", async (req, res) => {
     }
 });
 
-router.put('/:id/approve', async (req, res) => {
+router.put('/:id/approve', authorizeAdmin, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -74,7 +75,7 @@ router.put('/:id/approve', async (req, res) => {
     }
 });
 
-router.put('/:id/reject', async (req, res) => {
+router.put('/:id/reject', authorizeAdmin, async (req, res) => {
     try {
         const { id } = req.params;
 

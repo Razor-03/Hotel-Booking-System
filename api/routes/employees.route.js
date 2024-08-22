@@ -1,8 +1,10 @@
 import express from "express";
 import Employee from "../models/employee.schema.js";
+import authorizeAdmin from "../middleware/authorizeAdmin.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
-router.post('/employees', async (req, res) => {
+router.post('/employees', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { name, image, cnic, contact, email, salary } = req.body;
 
@@ -22,7 +24,7 @@ router.post('/employees', async (req, res) => {
     }
 });
 
-router.get('/employees', async (req, res) => {
+router.get('/employees', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employees = await Employee.find();
         res.status(200).json(employees);
@@ -31,7 +33,7 @@ router.get('/employees', async (req, res) => {
     }
 });
 
-router.get('/employees/:id', async (req, res) => {
+router.get('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employee = await Employee.findById(req.params.id);
         if (!employee) {
@@ -43,7 +45,7 @@ router.get('/employees/:id', async (req, res) => {
     }
 });
 
-router.put('/employees/:id', async (req, res) => {
+router.put('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { name, image, cnic, contact, email, salary } = req.body;
 
@@ -66,7 +68,7 @@ router.put('/employees/:id', async (req, res) => {
     }
 });
 
-router.delete('/employees/:id', async (req, res) => {
+router.delete('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employee = await Employee.findById(req.params.id);
         if (!employee) {

@@ -4,6 +4,7 @@ import User from "../models/user.schema.js";
 import Booking from "../models/booking.schema.js";
 import Review from "../models/review.schema.js";
 import { verifyToken } from "../middleware/verifyToken.js";
+import authorizeAdmin from "../middleware/authorizeAdmin.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -39,7 +40,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/info", async (req, res) => {
+router.get("/info", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     const rooms = await Room.find();
     const totalRooms = rooms.length;
@@ -73,7 +74,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, authorizeAdmin, async (req, res) => {
   const {
     roomNo,
     roomType,
@@ -156,7 +157,7 @@ router.post("/:id/book", verifyToken, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -199,7 +200,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     await Room.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Room deleted successfully" });
@@ -208,7 +209,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.post("/:id/review", async (req, res) => {
+router.post("/:id/review", verifyToken, async (req, res) => {
   const { id } = req.params;
   try {
     const { username, rating, comment } = req.body;
