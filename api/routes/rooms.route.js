@@ -86,10 +86,9 @@ router.post("/", async (req, res) => {
 router.post('/:id/book', async (req, res) => {
     const { id } = req.params;
     try {
-        const { username, email, contact, arrivalDate, departureDate, numberOfAdults, numberOfChildren } = req.body;
+        const { arrivalDate, departureDate, numberOfAdults, numberOfChildren } = req.body;
 
         const room = await Room.findById(id);
-        console.log(id, room);
         if (!room) {
             return res.status(400).json({ error: 'Room not available or does not exist.' });
         } else if (!room.availabilityStatus) {
