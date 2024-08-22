@@ -7,9 +7,10 @@ const router = express.Router();
 
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, contact, password, role = "user" } = req.body;
+    const { username, email, contact, password } = req.body;
     const hashed = await bcrypt.hash(password, 12);
 
+    role = "user";
     const newUser = new User({
       username,
       password: hashed,
@@ -38,8 +39,8 @@ router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-
-    const { password: pwd, ...userInfo } = user;
+    
+    const { email, contact } = user;
 
     if (user) {
       const isValid = await bcrypt.compare(password, user.password);
@@ -49,7 +50,7 @@ router.post("/login", async (req, res) => {
           secure: process.env.NODE_ENV === "production",
           expiresIn: 1000 * 60 * 60 * 24 * 7,
         });
-        return res.status(200).json(userInfo);
+        return res.status(200).json({username, email, contact});
       }
     }
     return res.status(400).json({ message: "Invalid credentials" });
@@ -59,6 +60,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-export const logout = async (req, res) => {
+router.post("/logout", async (req, res) => {
     res.clearCookie("token").status(200).json({message: "Logged out successfully"});
-}
+});
+
+export default router;
