@@ -39,6 +39,29 @@ router.get("/", async (req, res) => {
 
 });
 
+router.get("/info", async (req, res) => {
+    try {
+        const rooms = await Room.find();
+        const totalRooms = rooms.length;
+        const availableRooms = rooms.filter(room => room.availabilityStatus).length;
+        const bookedRooms = totalRooms - availableRooms;
+        res.status(200).json({ totalRooms, availableRooms, bookedRooms });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get("/reviews", async (req, res) => {
+    try {
+        const reviews = await Review.find()
+            .populate('user', 'name email')
+            .populate('room', 'roomNo roomType');
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get("/:id", async (req, res) => {
     try {
         const room = await Room.findById(req.params.id).populate("history.user");
