@@ -21,6 +21,16 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/revenue", async (req, res) => {
+    try {
+        const bookings = await Booking.find({ bookingStatus: "Approved" });
+        const revenue = bookings.reduce((total, booking) => total + booking.totalAmount, 0);
+        res.status(200).json({ revenue });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.put('/:id/approve', async (req, res) => {
     try {
         const { id } = req.params;
