@@ -28,6 +28,14 @@ function ManageEmployees() {
   const handleAddEmployee = async () => {
     const response = await apiRequest.post(`/employees`, newEmployee);
     setEmployees([...employees, response.data]);
+    setNewEmployee({
+      name: "",
+      image: "",
+      cnic: "",
+      contact: "",
+      email: "",
+      salary: "",
+    });
   };
 
   const handleDeleteEmployee = async (id) => {
