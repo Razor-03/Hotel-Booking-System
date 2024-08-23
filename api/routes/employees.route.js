@@ -4,7 +4,7 @@ import authorizeAdmin from "../middleware/authorizeAdmin.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
-router.post('/employees', verifyToken, authorizeAdmin, async (req, res) => {
+router.post('/', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { name, image, cnic, contact, email, salary } = req.body;
 
@@ -24,7 +24,7 @@ router.post('/employees', verifyToken, authorizeAdmin, async (req, res) => {
     }
 });
 
-router.get('/employees', verifyToken, authorizeAdmin, async (req, res) => {
+router.get('/', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employees = await Employee.find();
         res.status(200).json(employees);
@@ -33,7 +33,7 @@ router.get('/employees', verifyToken, authorizeAdmin, async (req, res) => {
     }
 });
 
-router.get('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
+router.get('/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employee = await Employee.findById(req.params.id);
         if (!employee) {
@@ -45,7 +45,7 @@ router.get('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
     }
 });
 
-router.put('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
+router.put('/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const { name, image, cnic, contact, email, salary } = req.body;
 
@@ -68,14 +68,13 @@ router.put('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
     }
 });
 
-router.delete('/employees/:id', verifyToken, authorizeAdmin, async (req, res) => {
+router.delete('/:id', verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const employee = await Employee.findById(req.params.id);
         if (!employee) {
             return res.status(404).json({ error: 'Employee not found' });
         }
-
-        await employee.remove();
+        await Employee.deleteOne(employee)
         res.status(200).json({ message: 'Employee deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });

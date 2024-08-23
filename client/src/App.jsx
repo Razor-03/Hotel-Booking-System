@@ -7,6 +7,7 @@ import RoomsListPage from "./routes/RoomsListPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./routes/Dashboard";
+import EmployeeUpdateForm from "./components/EmployeeUpdateForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -64,7 +65,11 @@ function App() {
         {
           path: "/dashboard",
           element: <Dashboard />,
-        }
+        },
+        {
+          path: "/updateEmployee/:id",
+          element: <EmployeeUpdateForm />,
+        },
       ],
     }
   ]);

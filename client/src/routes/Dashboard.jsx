@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../lib/apiRequest.js";
 import ManageBookings from "../components/ManageBookings.jsx";
+import ManageEmployees from "../components/ManageEmployees.jsx";
 
 const Dashboard = () => {
   const [revenue, setRevenue] = useState(null);
@@ -38,6 +39,7 @@ const Dashboard = () => {
         {rooms && <RoomsCard rooms={rooms} />}
       </div>
       <ManageBookings />
+      <ManageEmployees />
     </div>
   );
 };

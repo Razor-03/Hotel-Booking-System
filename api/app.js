@@ -25,11 +25,13 @@ import roomRoutes from './routes/rooms.route.js';
 import userRoutes from './routes/users.route.js';
 import bookingRoutes from './routes/bookings.route.js';
 import authRoutes from './routes/auth.route.js';
+import employeeRoutes from './routes/employees.route.js';
 
 app.use("/api/rooms", roomRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/employees", employeeRoutes);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
