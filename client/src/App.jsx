@@ -15,6 +15,7 @@ import RoomDetailsPage from "./routes/RoomDetailsPage";
 import ProfilePage from "./routes/ProfilePage";
 import Success from "./components/Success";
 import Failure from "./components/Failure";
+import ContactPage from "./routes/ContactPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,6 +57,10 @@ function App() {
         {
           path: "/cancel",
           element: <Failure />,
+        },
+        {
+          path: "/contact",
+          element: <ContactPage />,
         },
         {
           path: "/:id",
