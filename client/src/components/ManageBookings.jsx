@@ -7,6 +7,7 @@ function ManageBookings() {
   useEffect(() => {
     async function fetchBookings() {
       const response = await apiRequest.get("/bookings?bookingStatus=Pending");
+      console.log(response.data);
       setBookings(response.data);
     }
     fetchBookings();
@@ -36,7 +37,7 @@ function ManageBookings() {
     <div className="bg-white shadow-md rounded-lg p-6 mt-8">
       <h2 className="text-2xl font-bold mb-4">Manage Bookings</h2>
       <ul className="divide-y">
-        {bookings.data ? (
+        {bookings ? (
           bookings.map((booking) => (
             <li
               key={booking._id}
