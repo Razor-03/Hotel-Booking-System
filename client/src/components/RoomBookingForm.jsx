@@ -22,7 +22,7 @@ const RoomBookingForm = ({ roomId }) => {
         numberOfChildren,
       });
 
-      setMessage(response.data.message);
+      setMessage(response.data.message + " Go to your profile");
     } catch (err) {
       setError(err.response?.data?.error || "Failed to book room.");
     }

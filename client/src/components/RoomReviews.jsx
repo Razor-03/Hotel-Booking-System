@@ -30,7 +30,6 @@ const RoomReviews = ({room}) => {
       setError(null);
       setRating(0);
       setComment("");
-      // Refetch reviews after successful submission
       const response = await apiRequest.get(`/reviews/${id}`);
       setReviews(response.data);
     } catch (err) {
