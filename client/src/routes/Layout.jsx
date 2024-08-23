@@ -9,7 +9,7 @@ export function Layout() {
             <div className="">
                 <Navbar />
             </div>
-            <div className="h-fit overflow-hidden">
+            <div className="h-fit">
                 <Outlet />
             </div>
         </div>
