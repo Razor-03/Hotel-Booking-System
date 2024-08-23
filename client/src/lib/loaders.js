@@ -8,7 +8,7 @@ export const singleRoomLoader = async ({ request, params }) => {
 
 export const roomsListLoader = async ({ request, params }) => {
   const query = request.url.split("?")[1];
-  const postPromise = apiRequest("/rooms?" + query);
+  const postPromise = apiRequest("/rooms?" + query + "&availabilityStatus=true");
   return defer({
     postResponse: postPromise,
   });

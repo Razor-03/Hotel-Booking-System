@@ -30,9 +30,14 @@ export default function Navbar() {
         <Link to={"/list"} className="hidden md:inline">
           Browse Rooms
         </Link>
-        <Link to={""} className="hidden md:inline">
+        <Link to={"/contact"} className="hidden md:inline">
           Contact Us
         </Link>
+        {(currentUser && currentUser.role === "admin") && (
+          <Link to={"/admin/dashboard"} className="hidden md:inline">
+            Dashboard
+          </Link>
+        )}
       </div>
       <div className="basis-2/5 flex lg:bg-[#f0ebd8] justify-end items-center gap-x-2 sm:gap-x-10 h-full ">
         {currentUser ? (

@@ -8,6 +8,8 @@ export default function Filter() {
     roomType: searchParams.get("floor") || "",
     minPrice: searchParams.get("minPrice") || 0,
     maxPrice: searchParams.get("maxPrice") || 10000000,
+    checkin: searchParams.get("checkin") || "",
+    checkout: searchParams.get("checkout") || "",
   });
 
   const handleChange = (e) => {
@@ -36,6 +38,28 @@ export default function Filter() {
             className="w-24 p-2 border border-[#a5abb4] rounded-sm"
             onChange={handleChange}
             defaultValue={query.floor}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="checkin" className="text-sm">Check In</label>
+          <input
+            type="date"
+            id="checkin"
+            name="checkin"
+            className="w-24 p-2 border border-[#a5abb4] rounded-sm"
+            onChange={handleChange}
+            defaultValue={query.checkin}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="checkout" className="text-sm">Check Out</label>
+          <input
+            type="date"
+            id="checkout"
+            name="checkout"
+            className="w-24 p-2 border border-[#a5abb4] rounded-sm"
+            onChange={handleChange}
+            defaultValue={query.checkout}
           />
         </div>
         <div className="flex flex-col">
