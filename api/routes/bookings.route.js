@@ -62,6 +62,9 @@ router.post("/:id/checkout", verifyToken, async (req, res) => {
     success_url: `${process.env.CLIENT_URL}/success`,
     cancel_url: `${process.env.CLIENT_URL}/cancel`,
   });
+
+  booking.checkedOut = true;
+  await booking.save()
   res.status(200).json({ id: session.id });
 });
 
