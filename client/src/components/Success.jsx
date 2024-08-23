@@ -1,9 +1,22 @@
-import React from 'react'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 const Success = () => {
-  return (
-    <div className='text-4xl text-green-600'>Payment Successful.</div>
-  )
-}
+  const navigate = useNavigate(); 
 
-export default Success
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/profile');
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
+  return (
+    <div className='text-3xl text-green-600 mx-auto'>
+      Payment Successful. Redirecting...
+    </div>
+  );
+};
+
+export default Success;
