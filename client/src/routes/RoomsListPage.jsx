@@ -6,9 +6,9 @@ import { Suspense } from "react";
 export default function RoomsListPage() {
   const data = useLoaderData();
   return (
-    <div className="flex h-full">
-      <div className="lg:pr-24 flex flex-col gap-20 h-full">
+    <div className="lg:pr-24 flex flex-col gap-20 h-full">
         <Filter />
+        <div className="flex h-full">
         <div className="flex gap-12 lg:gap-32 flex-wrap justify-center">
           <Suspense fallback={<div className="">Loading...</div>}>
             <Await

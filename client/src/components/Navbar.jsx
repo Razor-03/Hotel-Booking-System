@@ -39,7 +39,7 @@ export default function Navbar() {
           <>
             <div className="user flex gap-x-4 items-center font-semibold">
               <span className="hidden md:inline">
-                <span className="text-sm font-thin">SIGNED IN AS</span>
+                <span className="text-sm font-thin">SIGNED IN AS </span>
                 {currentUser.username}
               </span>
             </div>

@@ -47,7 +47,7 @@ export default function Searchbar() {
           onChange={handleChange}
         />
         <Link
-          to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
+          to={`/list?floor=${query.floor}&minPrice=${query.minPrice || 10}&maxPrice=${query.maxPrice || 100000}`}
           className="flex justify-center items-center bg-[#1d2d44]"
         >
           <button className="px-4 text-3xl p-2 text-[#f0ebd8] flex-1 md:max-w-20">

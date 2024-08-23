@@ -5,8 +5,7 @@ import { useSearchParams } from "react-router-dom";
 export default function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({
-    roomType: searchParams.get("type") || "",
-    floor: searchParams.get("city") || "",
+    roomType: searchParams.get("floor") || "",
     minPrice: searchParams.get("minPrice") || 0,
     maxPrice: searchParams.get("maxPrice") || 10000000,
   });
@@ -21,7 +20,7 @@ export default function Filter() {
   return (
     <div className="flex flex-col gap-y-2.5">
       <h1 className="text-3xl font-light">
-        Search results for <b>{searchParams.get("floor")} floor</b>
+        Search results for <b>Floor {searchParams.get("floor")}</b>
       </h1>
       <div className="flex justify-between">
         <div className="flex flex-col">
@@ -40,19 +39,19 @@ export default function Filter() {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="type" className="text-sm">
+          <label htmlFor="roomType" className="text-sm">
             Room Type
           </label>
           <select
-            id="type"
-            name="type"
+            id="roomType"
+            name="roomType"
             className="p-2 w-24 border border-[#a5abb4] rounded-sm"
             onChange={handleChange}
             defaultValue={query.roomType}
           >
             <option value="">any</option>
-            <option value="buy">Single</option>
-            <option value="rent">Double</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
           </select>
         </div>
         <div className="flex flex-col">

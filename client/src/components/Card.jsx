@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { IoLocationOutline } from "react-icons/io5";
 
 export default function Card({ item }) {
   return (
@@ -16,12 +15,12 @@ export default function Card({ item }) {
           <Link to={`/${item._id}`}>
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 relative">
               Room #{item.roomNo}
-              <span className="font-light text-base absolute right-0">{item.roomType}</span>
+              <span className="font-light text-base absolute right-0">
+                {item.roomType}
+              </span>
             </h5>
           </Link>
-          <p className="mb-3 font-normal text-gray-700">
-            {item.description}
-          </p>
+          <p className="mb-3 font-normal text-gray-700">{item.description}</p>
           <Link
             to={`/${item._id}`}
             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#1d2d44] rounded-lg hover:bg-[#2d2f44]"
