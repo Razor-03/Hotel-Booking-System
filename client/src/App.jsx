@@ -63,7 +63,7 @@ function App() {
       element: <RequireAdmin />,
       children: [
         {
-          path: "/dashboard",
+          path: "/admin/dashboard",
           element: <Dashboard />,
         },
         {
