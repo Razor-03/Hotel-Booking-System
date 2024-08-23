@@ -147,15 +147,6 @@ router.post("/:id/book", verifyToken, async (req, res) => {
         });
     }
 
-    room.history.push({
-      user: req.userId,
-      arrivalDate,
-      departureDate,
-    });
-    room.availabilityStatus = false;
-
-    await room.save();
-
     const booking = new Booking({
       user: req.userId,
       room: room._id,
