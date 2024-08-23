@@ -23,6 +23,7 @@ export default function Card({ item }) {
               </span>
             </h5>
           </Link>
+          <p className="mb-3 font-normal text-gray-700">$ {item.pricePerNight}</p>
           <p className="mb-3 font-normal text-gray-700">{item.description}</p>
           <Link
             to={`/${item._id}`}
