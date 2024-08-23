@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/user.schema.js";
+import Booking from "../models/booking.schema.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import authorizeAdmin from "../middleware/authorizeAdmin.js";
 const router = express.Router();
@@ -8,6 +9,15 @@ router.get("/", verifyToken, authorizeAdmin, async (req, res) => {
     try {
         const users = await User.find();
         res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get("/bookings", verifyToken, async (req, res) => {
+    try {
+        const bookings = await Booking.find({ user: req.userId }).populate("room", "roomNo availabilityStatus");
+        res.status(200).json(bookings);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
