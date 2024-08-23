@@ -57,7 +57,7 @@ router.get("/info", verifyToken, authorizeAdmin, async (req, res) => {
 router.get("/reviews", async (req, res) => {
   try {
     const reviews = await Review.find()
-      .populate("user", "name email")
+      .populate("user", "username email")
       .populate("room", "roomNo roomType");
     res.status(200).json(reviews);
   } catch (error) {

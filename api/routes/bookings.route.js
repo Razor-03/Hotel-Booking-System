@@ -17,12 +17,13 @@ router.get("/", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     let bookings = null;
     if (bookingStatus) {
-      bookings = await Booking.find({ bookingStatus });
+      bookings = await Booking.find({ bookingStatus }).populate("room").populate("user", "username");
     } else {
-      bookings = await Booking.find();
+      bookings = await Booking.find().populate("room").populate("user", 'username');
     }
     res.status(200).json(bookings);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: error.message });
   }
 });
@@ -133,18 +134,18 @@ router.put("/:id/approve", verifyToken, authorizeAdmin, async (req, res) => {
 router.put("/:id/reject", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-
+    
     const booking = await Booking.findById(id);
     if (!booking) {
       return res.status(404).json({ error: "Booking not found." });
     }
-
-    if (booking.status === "Rejected") {
+    
+    if (booking.bookingStatus === "Rejected") {
       return res.status(400).json({ error: "Booking is already rejected." });
     }
-
-    booking.status = "Rejected";
-
+    
+    booking.bookingStatus = "Rejected";
+    
     await booking.save();
 
     res.status(200).json({
