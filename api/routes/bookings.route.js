@@ -112,13 +112,20 @@ router.put("/:id/approve", verifyToken, authorizeAdmin, async (req, res) => {
     }
     const room = await Room.findById(booking.room);
     room.availabilityStatus = false;
+    room.history.push({
+      user: booking.user,
+      arrivalDate: booking.arrivalDate,
+      departureDate: booking.departureDate,
+    });
 
+    
     if (booking.status === "Approved") {
       return res.status(400).json({ error: "Booking is already approved." });
     }
-
+    
     booking.bookingStatus = "Approved";
-
+    
+    await room.save();
     await booking.save();
 
     res.status(200).json({
