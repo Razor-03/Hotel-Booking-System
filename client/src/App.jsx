@@ -12,6 +12,7 @@ import AddRoomForm from "./components/AddRoomForm";
 import AdminRoomsList from "./routes/AdminRoomsList";
 import UpdateRoomForm from "./components/UpdateRoomForm";
 import RoomDetailsPage from "./routes/RoomDetailsPage";
+import ProfilePage from "./routes/ProfilePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,10 @@ function App() {
       path: "/",
       element: <RequireAuth />,
       children: [
+        {
+          path: "/profile",
+          element: <ProfilePage />,
+        },
         {
           path: "/:id",
           element: <RoomDetailsPage />,
