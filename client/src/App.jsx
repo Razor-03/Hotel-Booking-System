@@ -5,6 +5,7 @@ import Homepage from "./routes/Homepage";
 import { roomsListLoader } from "./lib/loaders";
 import RoomsListPage from "./routes/RoomsListPage";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,10 +26,10 @@ function App() {
           path: "/login",
           element: <Login />,
         },
-        // {
-        //   path: "/register",
-        //   element: <Register />,
-        // },
+        {
+          path: "/register",
+          element: <Register />,
+        },
       ],
     },
     // {
