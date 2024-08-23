@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 export default function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({
-    roomType: searchParams.get("floor") || "",
+    floor: searchParams.get("floor") || "",
     minPrice: searchParams.get("minPrice") || 0,
     maxPrice: searchParams.get("maxPrice") || 10000000,
     checkin: searchParams.get("checkin") || "",
