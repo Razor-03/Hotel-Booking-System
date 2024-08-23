@@ -27,15 +27,26 @@ export default function Navbar() {
         <Link to={"/"} className="hidden md:inline">
           Home
         </Link>
-        <Link to={"/list"} className="hidden md:inline">
-          Browse Rooms
-        </Link>
+        {currentUser && currentUser.role === "admin" ? (
+          <Link to={"/admin/rooms"} className="hidden md:inline">
+            Manage Rooms
+          </Link>
+        ) : (
+          <Link to={"/list"} className="hidden md:inline">
+            Browse Rooms
+          </Link>
+        )}
         <Link to={"/contact"} className="hidden md:inline">
           Contact Us
         </Link>
-        {(currentUser && currentUser.role === "admin") && (
+        {currentUser && currentUser.role === "admin" && (
           <Link to={"/admin/dashboard"} className="hidden md:inline">
             Dashboard
+          </Link>
+        )}
+        {currentUser && currentUser.role === "admin" && (
+          <Link to={"/admin/rooms/new"} className="hidden md:inline">
+            Add Room
           </Link>
         )}
       </div>

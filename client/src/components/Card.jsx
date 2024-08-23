@@ -47,7 +47,7 @@ export default function Card({ item }) {
           </Link>
           {(currentUser && currentUser.role === "admin") && (
             <Link
-              to={`/updateEmployee/${item._id}`}
+              to={`/${item._id}/update`}
               className="ms-8 inline-flex items-center px-3 py-2 mt-2 text-sm font-medium text-center text-white bg-[#1a9234] rounded-lg hover:bg-[#1b5e29]"
             >
               Update

@@ -10,6 +10,7 @@ import Dashboard from "./routes/Dashboard";
 import EmployeeUpdateForm from "./components/EmployeeUpdateForm";
 import AddRoomForm from "./components/AddRoomForm";
 import AdminRoomsList from "./routes/AdminRoomsList";
+import UpdateRoomForm from "./components/UpdateRoomForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,6 +80,16 @@ function App() {
         {
           path: "/admin/rooms",
           element: <AdminRoomsList />,
+          loader: roomsListLoader,
+        },
+        {
+          path: "/admin/rooms",
+          element: <AdminRoomsList />,
+          loader: roomsListLoader,
+        },
+        {
+          path: "/:id/update",
+          element: <UpdateRoomForm />,
           loader: roomsListLoader,
         },
       ],
