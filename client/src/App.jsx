@@ -1,11 +1,12 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Layout } from "./routes/Layout";
+import { Layout, RequireAdmin } from "./routes/Layout";
 import Homepage from "./routes/Homepage";
 import { roomsListLoader } from "./lib/loaders";
 import RoomsListPage from "./routes/RoomsListPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Dashboard from "./routes/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,6 +57,16 @@ function App() {
     //     },
     //   ],
     // },
+    {
+      path: "/",
+      element: <RequireAdmin />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        }
+      ],
+    }
   ]);
 
   return <RouterProvider router={router} />;

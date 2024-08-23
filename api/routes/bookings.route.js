@@ -64,7 +64,7 @@ router.post("/:id/checkout", verifyToken, async (req, res) => {
   res.status(200).json({ id: session.id });
 });
 
-router.get("/info", authorizeAdmin, async (req, res) => {
+router.get("/info", verifyToken, authorizeAdmin, async (req, res) => {
   try {
     const bookings = await Booking.find();
     const totalBookings = bookings.length;
