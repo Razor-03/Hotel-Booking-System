@@ -72,12 +72,14 @@ export default function Navbar() {
                 {currentUser.username}
               </span>
             </div>
-            <Link
-              to="/profile"
-              className="py-2 px-4 cursor-pointer bg-[#1d2d44] text-[#f0ebd8] me-3 relative rounded-md hidden md:inline"
-            >
-              Profile
-            </Link>
+            {currentUser.role === "user" && (
+              <Link
+                to="/profile"
+                className="py-2 px-4 cursor-pointer bg-[#1d2d44] text-[#f0ebd8] me-3 relative rounded-md hidden md:inline"
+              >
+                Profile
+              </Link>
+            )}
             <button
               className="py-2 px-4 cursor-pointer bg-[#1d2d44] text-[#f0ebd8] me-3 relative rounded-md hidden md:inline"
               onClick={handleLogout}
