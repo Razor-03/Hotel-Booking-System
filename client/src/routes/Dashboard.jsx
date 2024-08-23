@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiRequest from "../lib/apiRequest.js";
 import ManageBookings from "../components/ManageBookings.jsx";
 import ManageEmployees from "../components/ManageEmployees.jsx";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [revenue, setRevenue] = useState(null);
@@ -32,7 +33,10 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
+      <div className="flex justify-between my-3">
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <a href="/admin/rooms/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">+ Add Room</a>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {revenue && <RevenueCard revenue={revenue} />}
         {bookings && <BookingsCard bookings={bookings} />}

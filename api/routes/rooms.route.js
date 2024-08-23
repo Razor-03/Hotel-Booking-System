@@ -80,22 +80,28 @@ router.post("/", verifyToken, authorizeAdmin, async (req, res) => {
     roomType,
     floor,
     pricePerNight,
-    roomImage,
+    roomImages,
     description,
     servantName,
     servantContact,
   } = req.body;
+
   try {
-    const room = new Room(
+    if (!Array.isArray(roomImages)) {
+      return res.status(400).json({ error: "roomImages must be an array" });
+    }
+
+    const room = new Room({
       roomNo,
       roomType,
       floor,
       pricePerNight,
-      roomImage,
+      roomImages,
       description,
       servantName,
-      servantContact
-    );
+      servantContact,
+    });
+
     await room.save();
     res.status(201).json({ message: "Room created successfully" });
   } catch (error) {
@@ -131,7 +137,9 @@ router.post("/:id/book", verifyToken, async (req, res) => {
     if (alreadyBooked) {
       return res
         .status(201)
-        .json({ message: "You have already booked this room. Pending for approval." });
+        .json({
+          message: "You have already booked this room. Pending for approval.",
+        });
     }
 
     room.history.push({
