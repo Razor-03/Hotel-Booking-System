@@ -4,6 +4,7 @@ import { Layout } from "./routes/Layout";
 import Homepage from "./routes/Homepage";
 import { roomsListLoader } from "./lib/loaders";
 import RoomsListPage from "./routes/RoomsListPage";
+import Login from "./components/Login";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,10 +21,10 @@ function App() {
           element: <RoomsListPage />,
           loader: roomsListLoader,
         },
-        // {
-        //   path: "/login",
-        //   element: <Login />,
-        // },
+        {
+          path: "/login",
+          element: <Login />,
+        },
         // {
         //   path: "/register",
         //   element: <Register />,
