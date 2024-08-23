@@ -9,8 +9,9 @@ router.post("/register", async (req, res) => {
   try {
     const { username, email, contact, password } = req.body;
     const hashed = await bcrypt.hash(password, 12);
+    console.log(hashed);
 
-    role = "user";
+    let role = "user";
     const newUser = new User({
       username,
       password: hashed,
@@ -18,16 +19,9 @@ router.post("/register", async (req, res) => {
       email,
       contact,
     });
+    console.log(newUser);
 
     await newUser.save();
-
-    if (newUser) {
-      res.cookie("token", jwt.sign({ id: newUser.id }, process.env.JWT_SECRET), {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        expiresIn: 1000 * 60 * 60 * 24 * 7,
-      });
-    }
 
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
@@ -39,7 +33,7 @@ router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    
+
     const { email, contact, role } = user;
 
     if (user) {
@@ -50,7 +44,7 @@ router.post("/login", async (req, res) => {
           secure: process.env.NODE_ENV === "production",
           expiresIn: 1000 * 60 * 60 * 24 * 7,
         });
-        return res.status(200).json({username, email, contact, role});
+        return res.status(200).json({ username, email, contact, role });
       }
     }
     return res.status(400).json({ message: "Invalid credentials" });
@@ -61,7 +55,10 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", async (req, res) => {
-    res.clearCookie("token").status(200).json({message: "Logged out successfully"});
+  res
+    .clearCookie("token")
+    .status(200)
+    .json({ message: "Logged out successfully" });
 });
 
 export default router;
