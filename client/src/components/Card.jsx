@@ -2,23 +2,49 @@ import { Link } from "react-router-dom";
 import { IoLocationOutline } from "react-icons/io5";
 
 export default function Card({ item }) {
-    return (
-        <div className="flex gap-x-6">
-            <Link to={`/${item.id}`} className="basis-2/5 h-48">
-                <img src={item.images[0]} alt="" className="w-full h-full object-cover rounded-md" />
-            </Link>
-            <div className="basis-3/5 flex flex-col justify-between gap-2">
-                <h2 className="text-lg font-semibold text-[#253344] transition ease-linear duration-100 hover:text-[#0d1b2a] hover:scale-105">
-                    <Link to={`/${item.id}`}>{item.roomNo}</Link>
-                </h2>
-                <p className="flex items-center gap-1 text-[#778da9]">
-                    <IoLocationOutline />
-                    <span className="">{item.floor}</span>
-                </p>
-                <p className="text-lg font-light p-1 px-2 bg-[#ffe6a7] rounded-md w-max">
-                    <span>$ {item.pricePerNight}</span>
-                </p>
-            </div>
+  return (
+    <div className="flex flex-wrap">
+      <div className="max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow">
+        <Link to={`/${item._id}`}>
+          <img
+            className="w-full h-48 object-cover"
+            src={item.roomImages[0]}
+            alt=""
+          />
+        </Link>
+        <div className="p-5">
+          <Link to={`/${item._id}`}>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 relative">
+              Room #{item.roomNo}
+              <span className="font-light text-base absolute right-0">{item.roomType}</span>
+            </h5>
+          </Link>
+          <p className="mb-3 font-normal text-gray-700">
+            {item.description}
+          </p>
+          <Link
+            to={`/${item._id}`}
+            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#1d2d44] rounded-lg hover:bg-[#2d2f44]"
+          >
+            Details
+            <svg
+              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </Link>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
