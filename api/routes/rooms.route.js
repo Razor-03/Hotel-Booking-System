@@ -8,7 +8,7 @@ import authorizeAdmin from "../middleware/authorizeAdmin.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { roomType, floor, minPrice, maxPrice, availabilityStatus } = req.query;
+  const { roomNo, roomType, floor, minPrice, maxPrice, availabilityStatus } = req.query;
 
   let query = {};
 
@@ -31,7 +31,11 @@ router.get("/", async (req, res) => {
   if (availabilityStatus) {
     query.availabilityStatus = availabilityStatus === "true";
   }
-
+  
+  if (roomNo) {
+    query.roomNo = parseInt(roomNo);
+  }
+  
   try {
     const rooms = await Room.find(query);
     res.status(200).json(rooms);

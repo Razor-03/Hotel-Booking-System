@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Dashboard from "./routes/Dashboard";
 import EmployeeUpdateForm from "./components/EmployeeUpdateForm";
 import AddRoomForm from "./components/AddRoomForm";
+import AdminRoomsList from "./routes/AdminRoomsList";
 
 function App() {
   const router = createBrowserRouter([
@@ -74,6 +75,11 @@ function App() {
         {
           path: "/admin/rooms/new",
           element: <AddRoomForm />,
+        },
+        {
+          path: "/admin/rooms",
+          element: <AdminRoomsList />,
+          loader: roomsListLoader,
         },
       ],
     }
