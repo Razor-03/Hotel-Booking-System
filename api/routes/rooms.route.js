@@ -8,7 +8,7 @@ import authorizeAdmin from "../middleware/authorizeAdmin.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { roomNo, roomType, floor, minPrice, maxPrice, availabilityStatus } = req.query;
+  const { roomNo, roomType, floor, minPrice, maxPrice, from } = req.query;
 
   let query = {};
 
@@ -28,14 +28,14 @@ router.get("/", async (req, res) => {
     query.floor = parseInt(floor);
   }
 
-  if (availabilityStatus) {
-    query.availabilityStatus = availabilityStatus === "true";
+  if (from !== "admin") {
+    query.availabilityStatus = true;
   }
-  
+
   if (roomNo) {
     query.roomNo = parseInt(roomNo);
   }
-  
+
   try {
     const rooms = await Room.find(query);
     res.status(200).json(rooms);
@@ -62,8 +62,8 @@ router.get("/:id/reviews", async (req, res) => {
   const { id } = req.params;
   try {
     const reviews = await Review.find({ room: id })
-    .populate("user", "username email")
-    .populate("room", "roomNo roomType");
+      .populate("user", "username email")
+      .populate("room", "roomNo roomType");
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -140,11 +140,9 @@ router.post("/:id/book", verifyToken, async (req, res) => {
     });
 
     if (alreadyBooked) {
-      return res
-        .status(201)
-        .json({
-          message: "You have already booked this room. Pending for approval.",
-        });
+      return res.status(201).json({
+        message: "You have already booked this room. Pending for approval.",
+      });
     }
 
     const booking = new Booking({
