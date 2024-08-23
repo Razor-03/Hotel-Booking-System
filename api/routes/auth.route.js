@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     
-    const { email, contact } = user;
+    const { email, contact, role } = user;
 
     if (user) {
       const isValid = await bcrypt.compare(password, user.password);
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
           secure: process.env.NODE_ENV === "production",
           expiresIn: 1000 * 60 * 60 * 24 * 7,
         });
-        return res.status(200).json({username, email, contact});
+        return res.status(200).json({username, email, contact, role});
       }
     }
     return res.status(400).json({ message: "Invalid credentials" });
