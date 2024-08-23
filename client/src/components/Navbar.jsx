@@ -2,13 +2,26 @@ import { useContext, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import apiRequest from "../lib/apiRequest";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [menuDisplay, setMenuDisplay] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, updateUser } = useContext(AuthContext);
 
   const toggleMenu = () => {
     setMenuDisplay(!menuDisplay);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -65,6 +78,12 @@ export default function Navbar() {
             >
               Profile
             </Link>
+            <button
+              className="py-2 px-4 cursor-pointer bg-[#1d2d44] text-[#f0ebd8] me-3 relative rounded-md hidden md:inline"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </>
         ) : (
           <>
