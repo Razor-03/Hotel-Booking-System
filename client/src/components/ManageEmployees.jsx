@@ -3,7 +3,16 @@ import apiRequest from "../lib/apiRequest";
 import { Link } from "react-router-dom";
 
 function ManageEmployees() {
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState([
+    {
+      name: "",
+      image: "",
+      cnic: "",
+      contact: "",
+      email: "",
+      salary: "",
+    },
+  ]);
   const [newEmployee, setNewEmployee] = useState({
     name: "",
     image: "",

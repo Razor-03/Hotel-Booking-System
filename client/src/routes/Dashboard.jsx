@@ -5,9 +5,18 @@ import ManageEmployees from "../components/ManageEmployees.jsx";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const [revenue, setRevenue] = useState(null);
-  const [bookings, setBookings] = useState(null);
-  const [rooms, setRooms] = useState(null);
+  const [revenue, setRevenue] = useState(1);
+  const [bookings, setBookings] = useState({
+    totalBookings: 0,
+    pendingBookings: 0,
+    approvedBookings: 0,
+    rejectedBookings: 0,
+  });
+  const [rooms, setRooms] = useState({
+    totalRooms: 0,
+    availableRooms: 0,
+    bookedRooms: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,9 +47,9 @@ const Dashboard = () => {
       <a href="/admin/rooms/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">+ Add Room</a>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {revenue && <RevenueCard revenue={revenue} />}
-        {bookings && <BookingsCard bookings={bookings} />}
-        {rooms && <RoomsCard rooms={rooms} />}
+        {<RevenueCard revenue={revenue} />}
+        { <BookingsCard bookings={bookings} />}
+        { <RoomsCard rooms={rooms} />}
       </div>
       <ManageBookings />
       <ManageEmployees />

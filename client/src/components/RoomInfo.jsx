@@ -3,7 +3,6 @@ import { AuthContext } from "../../context/AuthContext";
 import { FaTrash } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
 import { useContext } from "react";
-import Room from "../../../api/models/room.schema";
 import RoomBookingForm from "./RoomBookingForm";
 
 const RoomInfo = ({ room }) => {

@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import apiRequest from "../lib/apiRequest";
 
 function ManageBookings() {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState([{
+    _id: "",
+    room: { roomNo: "" },
+    user: { username: "" },
+    bookingStatus: "",
+  }]);
 
   useEffect(() => {
     async function fetchBookings() {
