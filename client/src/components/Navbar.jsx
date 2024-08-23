@@ -50,7 +50,7 @@ export default function Navbar() {
           </Link>
         )}
       </div>
-      <div className="basis-2/5 flex lg:bg-[#f0ebd8] justify-end items-center gap-x-2 sm:gap-x-10 h-full ">
+      <div className="basis-2/5 flex  justify-end items-center gap-x-2 sm:gap-x-10 h-full ">
         {currentUser ? (
           <>
             <div className="user flex gap-x-4 items-center font-semibold">
