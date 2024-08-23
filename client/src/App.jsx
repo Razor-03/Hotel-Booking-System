@@ -1,8 +1,8 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Layout, RequireAdmin } from "./routes/Layout";
+import { Layout, RequireAdmin, RequireAuth } from "./routes/Layout";
 import Homepage from "./routes/Homepage";
-import { roomsListLoader } from "./lib/loaders";
+import { roomsListLoader, singleRoomLoader } from "./lib/loaders";
 import RoomsListPage from "./routes/RoomsListPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -11,6 +11,7 @@ import EmployeeUpdateForm from "./components/EmployeeUpdateForm";
 import AddRoomForm from "./components/AddRoomForm";
 import AdminRoomsList from "./routes/AdminRoomsList";
 import UpdateRoomForm from "./components/UpdateRoomForm";
+import RoomDetailsPage from "./routes/RoomDetailsPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -37,30 +38,17 @@ function App() {
         },
       ],
     },
-    // {
-    //   path: "/",
-    //   element: <RequireAuth />,
-    //   children: [
-    //     {
-    //       path: "/profile",
-    //       element: <ProfilePage />,
-    //       loader: profilePageLoader,
-    //     },
-    //     {
-    //       path: "/:id",
-    //       element: <Singlepage />,
-    //       loader: singlePageLoader,
-    //     },
-    //     {
-    //       path: "/profile/update",
-    //       element: <ProfileUpdatePage />,
-    //     },
-    //     {
-    //       path: "/add",
-    //       element: <NewPostPage />,
-    //     },
-    //   ],
-    // },
+    {
+      path: "/",
+      element: <RequireAuth />,
+      children: [
+        {
+          path: "/:id",
+          element: <RoomDetailsPage />,
+          loader: singleRoomLoader,
+        },
+      ],
+    },
     {
       path: "/",
       element: <RequireAdmin />,
