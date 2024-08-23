@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../lib/apiRequest";
+import { loadStripe } from "@stripe/stripe-js";
 
 const ProfilePage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -22,16 +23,19 @@ const ProfilePage = () => {
 
   const handleCheckout = async (bookingId) => {
     try {
-      await apiRequest.post(`/bookings/${bookingId}/checkout`); // Assume there's a checkout route
-      setBookings(
-        bookings.map((booking) =>
-          booking._id === bookingId
-            ? { ...booking, bookingStatus: "Checked out" }
-            : booking
-        )
-      );
-    } catch (err) {
-      setError("Failed to checkout. Please try again.");
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY);
+
+      const response = await apiRequest.post(`/bookings/${bookingId}/checkout`);
+
+      const result = stripe.redirectToCheckout({
+        sessionId: response.data.id,
+      });
+
+      if (result.error) {
+        console.log(result.error);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -57,35 +61,39 @@ const ProfilePage = () => {
         <h2 className="font-light text-3xl mb-4">Your Bookings</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <div className="flex flex-col gap-4">
-          {bookings.map((booking) => (
-            (booking.room.availabilityStatus || booking.bookingStatus === "Approved") && ( // Only show if the room is available
-              <div
-                key={booking._id}
-                className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
-              >
-                <div>
-                  <p className="text-lg">
-                    <span className="font-semibold">Room No:</span> {booking.room.roomNo}
-                  </p>
-                  <p className="text-lg">
-                    <span className="font-semibold">Booking Status:</span> {booking.bookingStatus}
-                  </p>
+          {bookings.map(
+            (booking) =>
+              (booking.room.availabilityStatus ||
+                booking.bookingStatus === "Approved") && ( // Only show if the room is available
+                <div
+                  key={booking._id}
+                  className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
+                >
+                  <div>
+                    <p className="text-lg">
+                      <span className="font-semibold">Room No:</span>{" "}
+                      {booking.room.roomNo}
+                    </p>
+                    <p className="text-lg">
+                      <span className="font-semibold">Booking Status:</span>{" "}
+                      {booking.bookingStatus}
+                    </p>
+                  </div>
+                  <div>
+                    {booking.bookingStatus === "Approved" ? (
+                      <button
+                        onClick={() => handleCheckout(booking._id)}
+                        className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+                      >
+                        Checkout
+                      </button>
+                    ) : booking.bookingStatus === "Pending" ? (
+                      <p className="text-yellow-500">Pending...</p>
+                    ) : null}
+                  </div>
                 </div>
-                <div>
-                  {booking.bookingStatus === "Approved" ? (
-                    <button
-                      onClick={() => handleCheckout(booking._id)}
-                      className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
-                    >
-                      Checkout
-                    </button>
-                  ) : booking.bookingStatus === "Pending" ? (
-                    <p className="text-yellow-500">Pending...</p>
-                  ) : null}
-                </div>
-              </div>
-            )
-          ))}
+              )
+          )}
         </div>
       </div>
     </div>

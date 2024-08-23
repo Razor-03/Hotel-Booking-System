@@ -13,6 +13,8 @@ import AdminRoomsList from "./routes/AdminRoomsList";
 import UpdateRoomForm from "./components/UpdateRoomForm";
 import RoomDetailsPage from "./routes/RoomDetailsPage";
 import ProfilePage from "./routes/ProfilePage";
+import Success from "./components/Success";
+import Failure from "./components/Failure";
 
 function App() {
   const router = createBrowserRouter([
@@ -46,6 +48,14 @@ function App() {
         {
           path: "/profile",
           element: <ProfilePage />,
+        },
+        {
+          path: "/success",
+          element: <Success />,
+        },
+        {
+          path: "/cancel",
+          element: <Failure />,
         },
         {
           path: "/:id",
@@ -86,7 +96,7 @@ function App() {
           loader: roomsListLoader,
         },
       ],
-    }
+    },
   ]);
 
   return <RouterProvider router={router} />;
