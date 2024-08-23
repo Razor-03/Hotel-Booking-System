@@ -1,40 +1,49 @@
 import Card from "../components/Card";
 import { Await, useLoaderData } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function AdminRoomsList() {
   const data = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState({roomNo: searchParams.get("roomNo")});
+  const [query, setQuery] = useState({
+    roomNo: searchParams.get("roomNo"),
+    from: "admin",
+  });
 
   const handleChange = (e) => {
-    setQuery({ roomNo: e.target.value });
+    setQuery({ roomNo: e.target.value, from: "admin" });
   };
 
   const handleFiltering = () => {
     setSearchParams(query);
   };
 
+  useEffect(() => {
+    setSearchParams({ roomNo: "", from: "admin" });
+  }, [setSearchParams]);
+
   return (
     <div className="lg:pr-24 flex flex-col gap-20 h-full">
       <div className="flex items-center flex-col">
-          <label htmlFor="roomNo" className="text-base font-semibold">
-            Room Number
-          </label>
-          <input
-            id="roomNo"
-            name="roomNo"
-            type="number"
-            className="w-64 p-2 border border-[#a5abb4] rounded-sm"
-            onChange={handleChange}
-            defaultValue={query.roomNo}
-          />
-            <button
-                onClick={handleFiltering}
-                className="mt-4 px-4 py-2 text-white bg-[#1d2d44] rounded-lg"
-            >Search</button>
-        </div>
+        <label htmlFor="roomNo" className="text-base font-semibold">
+          Room Number
+        </label>
+        <input
+          id="roomNo"
+          name="roomNo"
+          type="number"
+          className="w-64 p-2 border border-[#a5abb4] rounded-sm"
+          onChange={handleChange}
+          defaultValue={query.roomNo}
+        />
+        <button
+          onClick={handleFiltering}
+          className="mt-4 px-4 py-2 text-white bg-[#1d2d44] rounded-lg"
+        >
+          Search
+        </button>
+      </div>
       <div className="flex h-full">
         <div className="flex gap-12 lg:gap-32 flex-wrap justify-center">
           <Suspense fallback={<div className="">Loading...</div>}>
