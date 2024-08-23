@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-// import Reviews from "../components/Reviews";
+import RoomReviews from "../components/RoomReviews";
 import RoomInfo from "../components/RoomInfo";
 import Slider from "../components/Slider";
 
@@ -17,12 +17,12 @@ export default function RoomDetailsPage() {
                     {/* <div className="basis-1/5"></div> */}
                 </div>
                 <div className="">
-                    
+
                 </div>
             </div>
             <div className="basis-4/12 bg-[#f0ebd8] rounded-sm lg:mt-0 py-4">
                 <div className="flex flex-col px-6 gap-y-12 h-full">
-                    {/* <Reviews room={room}/> */}
+                    <RoomReviews room={room}/>
                 </div>
             </div>
         </div>

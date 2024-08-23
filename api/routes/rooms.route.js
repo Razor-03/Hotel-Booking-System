@@ -58,11 +58,12 @@ router.get("/info", verifyToken, authorizeAdmin, async (req, res) => {
   }
 });
 
-router.get("/reviews", async (req, res) => {
+router.get("/:id/reviews", async (req, res) => {
+  const { id } = req.params;
   try {
-    const reviews = await Review.find()
-      .populate("user", "username email")
-      .populate("room", "roomNo roomType");
+    const reviews = await Review.find({ room: id })
+    .populate("user", "username email")
+    .populate("room", "roomNo roomType");
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 const RoomInfo = ({ room }) => {
   const { currentUser } = useContext(AuthContext);
+  console.log(room);
   return (
     <div className="info mt-10">
       <div className="top flex justify-between">
@@ -27,6 +28,33 @@ const RoomInfo = ({ room }) => {
       </div>
       <div className="bottom text-[#555] mt-10 leading-relaxed">
         <p>{room.description}</p>
+      </div>
+      <div className="mt-3">
+        <h1 className="font-semibold text-2xl">Room History</h1>
+        {room.history.map((history) => (
+          <div
+            key={history._id}
+            className="bg-white shadow-lg rounded-lg p-6 mt-4 border border-gray-200"
+          >
+            <div className="flex flex-col gap-4 items-start">
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-semibold">{history.user.username}</p>
+                <p className="text-sm text-gray-500">{history.user.email}</p>
+                <p className="text-sm text-gray-500">{history.user.contact}</p>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <p>
+                  <span className="font-medium">Arrival Date:</span>{" "}
+                  {history.arrivalDate}
+                </p>
+                <p>
+                  <span className="font-medium">Departure Date:</span>{" "}
+                  {history.departureDate}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
