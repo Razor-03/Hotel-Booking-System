@@ -72,7 +72,7 @@ const ProfilePage = () => {
                   <div>
                     <p className="text-lg">
                       <span className="font-semibold">Room No:</span>{" "}
-                      {booking.room.roomNo}
+                      <a href={`/${booking.room._id}`}>{booking.room.roomNo}</a>
                     </p>
                     <p className="text-lg">
                       <span className="font-semibold">Booking Status:</span>{" "}
@@ -81,12 +81,20 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     {booking.bookingStatus === "Approved" ? (
-                      <button
-                        onClick={() => handleCheckout(booking._id)}
-                        className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
-                      >
-                        Checkout
-                      </button>
+                      booking.checkedOut ? (
+                        <button
+                          className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+                        >
+                          Already Checked Out
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleCheckout(booking._id)}
+                          className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+                        >
+                          Checkout
+                        </button>
+                      )
                     ) : booking.bookingStatus === "Pending" ? (
                       <p className="text-yellow-500">Pending...</p>
                     ) : null}
